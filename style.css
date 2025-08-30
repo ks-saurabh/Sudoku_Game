@@ -1,0 +1,108 @@
+.Header{
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 10px;
+  background-color: blanchedalmond;
+}
+#name{
+  width: 100%;
+  display: flex;
+  justify-content:center;
+  align-items: center;
+  font-size: 45px;
+  font-weight: bold;
+}
+.Heading{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 35px;
+  font-weight: bolder;
+}
+
+.game-wrap{
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  align-items: center;
+  gap: 2px;
+  margin-bottom: 40px;
+}
+
+.sudoku_grid{
+  display: flex;
+  flex-direction: row;
+  max-width: 578px;
+  flex-wrap: wrap;
+  margin: 10px auto 0 auto;
+  order: 0;
+}
+.sudoku_grid div{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  color: black;
+  font-size: 40px;
+  box-sizing: border-box;
+}
+
+.numpad{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px 10px;
+  width: 240px;
+  white-space: normal;
+}
+.numpad button{
+  flex: 0 0 calc(33.333% - 7px);
+  padding: 12px 0;
+  font-size: 18px;
+  cursor: pointer;
+  background-color: #538fbe;
+  color: #fff;
+  border: none;
+  border-radius: 2px;
+  text-align: center;
+}
+
+.Buttons{
+  order: 3;
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  width: 240px;
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+#NewGame,#SolvePuzzle{
+  display: inline-block;
+  text-decoration: none;
+  color: #fff;
+  font-weight: bold;
+  background-color: #538fbe;
+  padding: 10px 18px;
+  font-size: 18px;
+  border: 1px solid #2d6898;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.3);
+  cursor: pointer;
+  border-radius: 2px;
+}
+
+.box1{ background-color: rgb(177, 176, 176); border: 2px solid white; }
+.box2{ background-color: rgb(177, 176, 176); border: 2px solid white; }
+.box3{ background-color: rgb(177, 176, 176); border: 2px solid white; }
+.box1:hover{ background-color: #b9bde7; color: black; }
+.box2:hover{ background-color: #b9bde7; color: black; }
+.box3:hover{ background-color: #b9bde7; color: black; }
+
+.bl{ border-left: 4px solid black; }
+.bb{ border-bottom: 4px solid black; }
+.br{ border-right: 4px solid black; }
+.bt{ border-top: 4px solid black; }
+
+.selected{ background-color: #b9bde7; }

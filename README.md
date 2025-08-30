@@ -1,2 +1,2 @@
-# Sudoku_Game
-Enjoy the Game by solving the Sudoku puzzles
+This project involve understanding of Backtracking Algorithm for solving a sudoku puzzle.
+This game is digined using HTML, CSS and JS.
