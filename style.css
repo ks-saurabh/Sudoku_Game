@@ -20,26 +20,29 @@
   align-items: center;
   font-size: 35px;
   font-weight: bolder;
+  margin: 10px 10px 15px 10px;
 }
 
-.game-wrap{
+.game-wrap {
   display: flex;
-  justify-content: center;
+  justify-content: center;   
+  align-items: flex-start;
   flex-direction: row;
-  align-items: center;
-  gap: 2px;
+  gap: 10px;                
   margin-bottom: 40px;
+  flex-wrap: wrap;         
 }
 
-.sudoku_grid{
+.sudoku_grid {
   display: flex;
   flex-direction: row;
   max-width: 578px;
   flex-wrap: wrap;
-  margin: 10px auto 0 auto;
+  margin: 0;               
   order: 0;
 }
-.sudoku_grid div{
+
+.sudoku_grid div {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -50,7 +53,10 @@
   box-sizing: border-box;
 }
 
-.numpad{
+.actbuttons {
+  background: beige;
+}
+.numpad {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -58,7 +64,8 @@
   width: 240px;
   white-space: normal;
 }
-.numpad button{
+
+.numpad button {
   flex: 0 0 calc(33.333% - 7px);
   padding: 12px 0;
   font-size: 18px;
@@ -70,13 +77,26 @@
   text-align: center;
 }
 
+/* Responsive behavior */
+@media (max-width: 768px) {
+  .game-wrap {
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .numpad {
+    width: auto;
+  }
+}
+
+
 .Buttons{
   order: 3;
   display: flex;
   justify-content: center;
   gap: 12px;
   width: 240px;
-  margin-top: 8px;
   margin-bottom: 8px;
 }
 #NewGame,#SolvePuzzle{
@@ -106,3 +126,10 @@
 .bt{ border-top: 4px solid black; }
 
 .selected{ background-color: #b9bde7; }
+
+.correct {
+    background-color: #a5e1ad;
+}
+.wrong {
+    background-color: #f28b82;
+}
