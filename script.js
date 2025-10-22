@@ -1,4 +1,5 @@
 const board = Array.from({ length: 9 }, () => Array(9).fill(0));
+const solboard = Array.from({ length: 9 }, () => Array(9).fill(0));
 let selectedCell = null;
 
 // Save current board to localStorage
@@ -36,6 +37,7 @@ function renderBoard(puzzle) {
         let row = Math.floor(i / 9);
         let col = i % 9;
         board[row][col] = puzzle[row][col];
+        solboard[row][col] = puzzle[row][col];
 
         const cell = document.getElementById(i);
         cell.textContent = puzzle[row][col] !== 0 ? puzzle[row][col] : "";
@@ -56,6 +58,54 @@ function renderBoard(puzzle) {
     }
 }
 
+function checkUserSolution() {
+    // Check if all cells are filled
+    for (let i = 0; i < 9; i++) {
+        for (let j = 0; j < 9; j++) {
+            if (board[i][j] === 0) return;
+        }
+    }
+
+    // Solve the stored initial board (copy)
+    solve(solboard);
+
+    // Compare each element
+    let isCorrect = true;
+    for (let i = 0; i < 9; i++) {
+        for (let j = 0; j < 9; j++) {
+            const id = i * 9 + j;
+            const cell = document.getElementById(id);
+
+            if (board[i][j] !== solboard[i][j]) {
+                isCorrect = false;
+                cell.classList.add("wrong");
+            } else {
+                cell.classList.remove("wrong");
+            }
+        }
+    }
+
+    if (isCorrect) {
+        document.querySelectorAll(".sudoku_grid div").forEach((cell) => {
+            cell.classList.add("correct");
+        });
+        setTimeout(() => {
+            alert("🎉 Congratulations! You solved the Sudoku correctly!");
+            document.querySelectorAll(".sudoku_grid div").forEach((cell) => {
+                cell.classList.remove("correct");
+            });
+        }, 300);
+    } else {
+        setTimeout(() => {
+            alert("❌ Some numbers are incorrect. Try again!");
+            document.querySelectorAll(".wrong").forEach((cell) => {
+                cell.classList.remove("wrong");
+            });
+        }, 300);
+    }
+}
+
+
 // Place number in selected cell
 function placeNumber(num) {
     if (!selectedCell) return;
@@ -66,12 +116,13 @@ function placeNumber(num) {
     board[row][col] = num;
     selectedCell.textContent = num === 0 ? "" : num;
     saveGame();
+    checkUserSolution();
 }
 
 // Backtracking solver
-function isSafe(board, row, col, num) {
+function isSafe(solboard, row, col, num) {
     for (let x = 0; x < 9; x++) {
-        if (board[row][x] === num || board[x][col] === num) return false;
+        if (solboard[row][x] === num || solboard[x][col] === num) return false;
     }
 
     let startRow = row - (row % 3),
@@ -79,21 +130,21 @@ function isSafe(board, row, col, num) {
 
     for (let r = 0; r < 3; r++) {
         for (let c = 0; c < 3; c++) {
-            if (board[r + startRow][c + startCol] === num) return false;
+            if (solboard[r + startRow][c + startCol] === num) return false;
         }
     }
     return true;
 }
 
-function solve(board) {
+function solve(solboard) {
     for (let row = 0; row < 9; row++) {
         for (let col = 0; col < 9; col++) {
-            if (board[row][col] === 0) {
+            if (solboard[row][col] === 0) {
                 for (let num = 1; num <= 9; num++) {
-                    if (isSafe(board, row, col, num)) {
-                        board[row][col] = num;
-                        if (solve(board)) return true;
-                        board[row][col] = 0;
+                    if (isSafe(solboard, row, col, num)) {
+                        solboard[row][col] = num;
+                        if (solve(solboard)) return true;
+                        solboard[row][col] = 0;
                     }
                 }
                 return false;
@@ -103,16 +154,15 @@ function solve(board) {
     return true;
 }
 
-// Fill solved board into UI
+// Fill solved solboard into UI
 function renderSolution() {
-    solve(board);
+    solve(solboard);
     for (let i = 0; i < 81; i++) {
         let row = Math.floor(i / 9);
         let col = i % 9;
         const cell = document.getElementById(i);
-        cell.textContent = board[row][col];
+        cell.textContent = solboard[row][col];
     }
-    saveGame();
 }
 
 // Event Listeners
