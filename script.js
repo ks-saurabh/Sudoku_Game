@@ -1,6 +1,7 @@
 const board = Array.from({ length: 9 }, () => Array(9).fill(0));
 const solboard = Array.from({ length: 9 }, () => Array(9).fill(0));
 let selectedCell = null;
+let difficulty = "easy";
 
 // Save current board to localStorage
 function saveGame() {
@@ -20,16 +21,20 @@ function loadGame() {
 
 // Fetch new puzzle from API
 async function getPuzzle() {
+    difficulty = document.getElementById("difficulty").value;
+
     try {
-        const res = await fetch("https://sugoku.onrender.com/board?difficulty=easy");
+        const res = await fetch(`https://sugoku.onrender.com/board?difficulty=${difficulty}`);
         const data = await res.json();
         const puzzle = data.board;
+
         renderBoard(puzzle);
         saveGame();
     } catch (err) {
         console.error("Error fetching puzzle:", err);
     }
 }
+
 
 // Render puzzle on board
 function renderBoard(puzzle) {
@@ -105,20 +110,6 @@ function checkUserSolution() {
     }
 }
 
-
-// Place number in selected cell
-function placeNumber(num) {
-    if (!selectedCell) return;
-    const id = parseInt(selectedCell.id);
-    const row = Math.floor(id / 9);
-    const col = id % 9;
-
-    board[row][col] = num;
-    selectedCell.textContent = num === 0 ? "" : num;
-    saveGame();
-    checkUserSolution();
-}
-
 // Backtracking solver
 function isSafe(solboard, row, col, num) {
     for (let x = 0; x < 9; x++) {
@@ -169,6 +160,21 @@ function renderSolution() {
 document.getElementById("NewGame").addEventListener("click", getPuzzle);
 document.getElementById("SolvePuzzle").addEventListener("click", renderSolution);
 
+
+// Place number in selected cell
+function placeNumber(num) {
+    if (!selectedCell) return;
+    const id = parseInt(selectedCell.id);
+    const row = Math.floor(id / 9);
+    const col = id % 9;
+
+    board[row][col] = num;
+    selectedCell.textContent = num === 0 ? "" : num;
+    saveGame();
+    checkUserSolution();
+}
+
+// Numkey 
 document.querySelectorAll(".num-key").forEach(btn => {
     btn.addEventListener("click", () => {
         placeNumber(parseInt(btn.textContent));
@@ -177,6 +183,16 @@ document.querySelectorAll(".num-key").forEach(btn => {
 
 document.getElementById("backspace").addEventListener("click", () => {
     placeNumber(0);
+});
+
+// Keyboard Numpad
+document.addEventListener("keydown", (event) => {
+    if (event.key >= "1" && event.key <= "9") {
+        placeNumber(parseInt(event.key));
+    }
+    if (event.key === "Backspace" || event.key === "Delete") {
+        placeNumber(0);
+    }
 });
 
 // Load saved game if available, otherwise fetch a new one
